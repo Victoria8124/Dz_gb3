@@ -1,0 +1,17 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.content{
+ display: flex;
+padding: 20px 0 20px 20px;
+}
+
+.title{
+    margin-left: 20px;
+}
+
+.link_review{
+    margin-left: 20px;
+}
