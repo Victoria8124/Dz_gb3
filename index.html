@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ддобавить отзыв</title>
+    <link rel="stylesheet" href="./sctyle.css">
+</head>
+<body>
+    <h1 class="title">Добавить отзыв</h1>
+    <div class="content">
+        <input class="name_product" type="text" placeholder="Название продукта">
+        <textarea name="text" id="review_input" placeholder="Введите отзыв"></textarea>
+        <button class="add_review">Добавить отзыв</button>
+
+    </div>
+    
+    <p class="link_review"><a href="./reviews.html">Перейти к отзывам</a></p>
+
+    <script>
+        //находим все элементы html
+        const productInput = document.querySelector('.name_product');
+        const reviewInput = document.getElementById('review_input');
+        const addButtonReview = document.querySelector('.add_review')
+
+            //Получаем отзывы из localStorage, если нет, то получаем объект
+        let reviewList = JSON.parse(localStorage.getItem('reviewList')) || {};
+
+        //обработчик события для добавления отзыва
+        addButtonReview.addEventListener('click', () => {
+            const product = productInput.value.trim();
+            const reviews = reviewInput.value.trim();
+
+            if(product !== '' && reviews !== '') {
+                if(!reviewList[product]){
+                    reviewList[product] = [];
+                }
+                reviewList[product].push(reviews);
+                //сохраняем отзывы в локал
+                localStorage.setItem('reviewList', JSON.stringify(reviewList))
+               // очищаем поля ввода
+               productInput.value = '';
+               reviewInput.value = '';
+                alert('Добавили отзыв')
+            } else {
+                alert('Заполните, пожалуйста, все поле')
+            }
+        });
+
+        
+    </script>
+
+
+</body>
+</html>
