@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница с отзывами</title>
+</head>
+
+<body>
+    <h1>Отзывы о продуктах</h1>
+    <ul class="product_list"></ul>
+    <p class="link_review"><a href="./index.html">Перейти к отзывам</a></p>
+    <script>
+        const reviewsList = document.querySelector('.product_list');
+
+        let reviewList = JSON.parse(localStorage.getItem('reviewList')) || {};
+
+        const updatedListOfReviews = () => {
+            //Очищаем список на странице 
+            reviewsList.innerHTML = '';
+
+            //Создаем новые элементы списка для каждого продукта 
+            Object.keys(reviewList).forEach((product) => {
+                const productItem = document.createElement('li');
+                productItem.textContent = product;
+                const listReview = document.createElement('ul');
+
+                reviewList[product].forEach((review, index) => {
+                    const reviewItem = document.createElement('li');
+                    reviewItem.textContent = review;
+
+                    // Создаем кнопку для удаления отзыва
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Удалить';
+                    deleteButton.addEventListener('click', () => {
+                        // Удаляем отзыв из массива
+                        reviewList[product].splice(index, 1);
+
+                        // Если у продукта больше нет отзывов, удаляем продукт из reviewList
+                        if (reviewList[product].length === 0) {
+                            delete reviewList[product];
+                        }
+
+                        // Сохраняем обновленный список в localStorage
+                        localStorage.setItem('reviewList', JSON.stringify(reviewList));
+
+                        // Обновляем отображение отзывов
+                        updatedListOfReviews();
+                    });
+
+                    // Добавляем кнопку удаления к отзыву
+                    reviewItem.appendChild(deleteButton);
+                    listReview.append(reviewItem);
+                });
+
+                productItem.append(listReview);
+                reviewsList.append(productItem);
+            });
+        };
+
+
+        updatedListOfReviews();
+    </script>
+</body>
+</html>
